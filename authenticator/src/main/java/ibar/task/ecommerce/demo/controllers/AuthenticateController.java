@@ -1,0 +1,23 @@
+package ibar.task.ecommerce.demo.controllers;
+
+import ibar.task.ecommerce.demo.models.Merchant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.validation.Valid;
+
+@Controller
+public class AuthenticateController {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @PostMapping("/signUp")
+    public ResponseEntity<Merchant> signUp(@Valid @RequestBody Merchant merchant) {
+        logger.error("test");
+        return new ResponseEntity<Merchant>(merchant, HttpStatus.OK);
+    }
+}

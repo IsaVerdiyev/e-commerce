@@ -1,8 +1,11 @@
-package ibar.task.ecommerce.demo.controllers;
+package ibar.task.ecommerce.demo.controllers.errors;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public
 class ApiValidationError extends ApiSubError {
     @JsonProperty("object")
     private String object;
@@ -16,7 +19,7 @@ class ApiValidationError extends ApiSubError {
     @JsonProperty("message")
     private String message;
 
-    ApiValidationError(String object, String field, String rejectedValue,  String message) {
+    public ApiValidationError(String object, String field, String rejectedValue, String message) {
         this.object = object;
         this.message = message;
         this.field = field;

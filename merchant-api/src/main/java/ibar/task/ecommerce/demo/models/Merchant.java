@@ -1,23 +1,24 @@
 package ibar.task.ecommerce.demo.models;
 
+import ibar.task.ecommerce.demo.repositories.MerchantRepository;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Merchant {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
     @NotBlank(message = "type is mandatory")
     String type;
 
     @NotBlank(message = "name is mandatory")
+    @Column(unique = true)
     String name;
 
     @NotBlank(message = "ownerName is mandatory")

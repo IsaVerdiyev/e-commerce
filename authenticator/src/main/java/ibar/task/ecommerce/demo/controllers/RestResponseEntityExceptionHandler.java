@@ -1,5 +1,6 @@
 package ibar.task.ecommerce.demo.controllers;
 
+import ibar.task.ecommerce.demo.utils.LengthNotValidException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,16 @@ public class RestResponseEntityExceptionHandler
             ApiSubError subError = new ApiValidationError(ex.getObjectName(), fieldName, value, errorMessage);
             apiSubErrorList.add(subError);
         });
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Validation errors", ex, apiSubErrorList);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", null, apiSubErrorList);
         return new ResponseEntity<>(apiError, status);
+    }
+
+    @ExceptionHandler(value = {CommonException.class})
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(CommonException ex,
+                                                                  WebRequest request) {
+        CommonException commonException = (CommonException) ex;
+        logger.error("commonException: " + commonException.getApiError().toString());
+
+        return new ResponseEntity<>(commonException.getApiError(), commonException.statusCode);
     }
 }

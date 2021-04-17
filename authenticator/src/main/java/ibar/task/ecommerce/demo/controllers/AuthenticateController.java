@@ -1,8 +1,12 @@
 package ibar.task.ecommerce.demo.controllers;
 
 import ibar.task.ecommerce.demo.models.Merchant;
+import ibar.task.ecommerce.demo.repositories.MerchantRepository;
+import ibar.task.ecommerce.demo.services.MerchantService;
+import ibar.task.ecommerce.demo.utils.LengthNotValidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,9 +19,11 @@ import javax.validation.Valid;
 public class AuthenticateController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    MerchantService merchantService;
+
     @PostMapping("/signUp")
-    public ResponseEntity<Merchant> signUp(@Valid @RequestBody Merchant merchant) {
-        logger.error("test");
-        return new ResponseEntity<Merchant>(merchant, HttpStatus.OK);
+    public ResponseEntity<Merchant> signUp(@Valid @RequestBody Merchant merchant) throws CommonException {
+        return new ResponseEntity<>(merchantService.addMerchant(merchant), HttpStatus.CREATED);
     }
 }

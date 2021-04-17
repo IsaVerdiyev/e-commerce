@@ -1,6 +1,9 @@
 package ibar.task.ecommerce.demo.models;
 
+import ibar.task.ecommerce.demo.repositories.MerchantRepository;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

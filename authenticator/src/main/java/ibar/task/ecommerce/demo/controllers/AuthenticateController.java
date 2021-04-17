@@ -1,9 +1,8 @@
 package ibar.task.ecommerce.demo.controllers;
 
+import ibar.task.ecommerce.demo.exceptions.CommonException;
 import ibar.task.ecommerce.demo.models.Merchant;
-import ibar.task.ecommerce.demo.repositories.MerchantRepository;
 import ibar.task.ecommerce.demo.services.MerchantService;
-import ibar.task.ecommerce.demo.utils.LengthNotValidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

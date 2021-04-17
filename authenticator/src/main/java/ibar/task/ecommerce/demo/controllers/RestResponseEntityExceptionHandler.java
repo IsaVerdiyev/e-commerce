@@ -1,6 +1,9 @@
 package ibar.task.ecommerce.demo.controllers;
 
-import ibar.task.ecommerce.demo.utils.LengthNotValidException;
+import ibar.task.ecommerce.demo.controllers.errors.ApiError;
+import ibar.task.ecommerce.demo.controllers.errors.ApiSubError;
+import ibar.task.ecommerce.demo.controllers.errors.ApiValidationError;
+import ibar.task.ecommerce.demo.exceptions.CommonException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +11,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler
@@ -39,9 +39,14 @@ public class RestResponseEntityExceptionHandler
     @ExceptionHandler(value = {CommonException.class})
     protected ResponseEntity<Object> handleMethodArgumentNotValid(CommonException ex,
                                                                   WebRequest request) {
-        CommonException commonException = (CommonException) ex;
-        logger.error("commonException: " + commonException.getApiError().toString());
 
-        return new ResponseEntity<>(commonException.getApiError(), commonException.statusCode);
+        return new ResponseEntity<>(ex.getApiError(), ex.getStatusCode());
+    }
+
+    @ExceptionHandler(value = {Exception.class})
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(Exception ex,
+                                                                  WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "UKNOWN EXCEPTION", ex.getMessage(), null);
+        return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 }

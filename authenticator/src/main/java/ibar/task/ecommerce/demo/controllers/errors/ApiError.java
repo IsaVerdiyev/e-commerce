@@ -1,4 +1,4 @@
-package ibar.task.ecommerce.demo.controllers;
+package ibar.task.ecommerce.demo.controllers.errors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

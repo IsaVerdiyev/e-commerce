@@ -6,13 +6,13 @@ public class AuthenticationInfo {
     @NotBlank
     String merchantName;
 
-    Boolean isRemembered;
+    boolean isRemembered;
 
     public String getMerchantName() {
         return merchantName;
     }
 
-    public Boolean getIsRemembered() {
+    public boolean getIsRemembered() {
         return isRemembered;
     }
 }

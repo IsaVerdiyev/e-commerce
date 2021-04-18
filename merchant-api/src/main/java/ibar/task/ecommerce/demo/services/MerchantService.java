@@ -40,7 +40,7 @@ public class MerchantService {
     }
 
     public String getMerchantByAuthenticationInfo(AuthenticationInfo authenticationInfo) throws MerchantNotFoundException, InvalidPasswordException, JsonProcessingException {
-        Merchant merchant = merchantRepository.findByName(authenticationInfo.getName());
+        Merchant merchant = merchantRepository.findByName(authenticationInfo.getMerchantName());
         if(merchant == null){
             throw new MerchantNotFoundException();
         }

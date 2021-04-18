@@ -5,6 +5,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.Date;
 
 @Service
 public class TokenService {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${jwt.secretkey}")
     String secretKey;
@@ -36,18 +40,16 @@ public class TokenService {
     }
 
     public String generateToken(AuthenticationInfo authenticationInfo) {
-
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
         Date issueDate = new Date();
         Date expirationDate = getExpirationDate(issueDate, authenticationInfo.getIsRemembered());
-
         //We will sign our JWT with our ApiKey secret
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
+
         //Let's set the JWT Claims
-        JwtBuilder builder = Jwts.builder().setId("some_id")
+        JwtBuilder builder = Jwts.builder()
                 .setIssuedAt(issueDate)
                 .setSubject(authenticationInfo.getMerchantName())
                 .setIssuer(issuer)
@@ -58,13 +60,12 @@ public class TokenService {
         return token;
     }
 
-    Date getExpirationDate(Date issueDate, Boolean isRemembered){
+    Date getExpirationDate(Date issueDate, Boolean isRemembered) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(issueDate);
-        if(isRemembered){
+        if (!isRemembered) {
             cal.add(Calendar.HOUR, expirationHours);
-        }
-        else{
+        } else {
             cal.add(Calendar.HOUR, expirationHoursForRemembered);
         }
         return cal.getTime();

@@ -2,6 +2,8 @@ package ibar.task.ecommerce.demo.controllers;
 
 import ibar.task.ecommerce.demo.domain.AuthenticationInfo;
 import ibar.task.ecommerce.demo.services.TokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/authenticator")
 public class TokenController {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     TokenService tokenService;

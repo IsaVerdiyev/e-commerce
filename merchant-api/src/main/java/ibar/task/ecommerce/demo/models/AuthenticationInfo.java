@@ -3,15 +3,16 @@ package ibar.task.ecommerce.demo.models;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AuthenticationInfo {
-    String name;
+    String merchantName;
     String password;
+    Boolean isRemembered;
 
-    public String getName() {
-        return name;
+    public String getMerchantName() {
+        return merchantName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 
     public String getPassword() {
@@ -20,6 +21,14 @@ public class AuthenticationInfo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getRemembered() {
+        return isRemembered;
+    }
+
+    public void setRemembered(Boolean remembered) {
+        isRemembered = remembered;
     }
 
     @Override

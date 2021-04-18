@@ -4,21 +4,22 @@ import ibar.task.ecommerce.demo.models.DeliveryOptions;
 import ibar.task.ecommerce.demo.models.Product;
 import ibar.task.ecommerce.demo.repositories.DelivertyOptionsRepository;
 import ibar.task.ecommerce.demo.repositories.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 public class ProductService {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     DelivertyOptionsRepository delivertyOptionsRepository;
@@ -45,54 +46,34 @@ public class ProductService {
     }
 
     List<Product> getProductsByQueryParameters(Map<String, String> params, Integer pageNumber, Integer pageSize) {
-        String query = "select p from Product p join p.inventoryItems i group by p";
-        boolean orderByAdded = false;
+        QuiryBuilder queryBuilder = new QuiryBuilder("select p from Product p join p.inventoryItems i").groupBy("p");
         for (Map.Entry<String, String> keyValue : params.entrySet()) {
             String key = keyValue.getKey();
             switch (key) {
                 case "sortByPriceAsc":
                     if (Boolean.valueOf(keyValue.getValue())) {
-                        if (!orderByAdded) {
-                            query += " order by p.unitPrice";
-                            orderByAdded = true;
-                        } else {
-                            query += ", p.unitPrice";
-                        }
+                        queryBuilder = queryBuilder.orderBy("p.unitPrice");
                     }
                     break;
                 case "sortByPriceDesc":
                     if (Boolean.valueOf(keyValue.getValue())) {
-                        if (!orderByAdded) {
-                            query += " order by p.unitPrice desc";
-                            orderByAdded = true;
-                        } else {
-                            query += ", p.unitPrice desc";
-                        }
+                        queryBuilder = queryBuilder.orderBy("p.unitPrice desc");
                     }
                     break;
                 case "sortByInventorySizeAsc":
                     if (Boolean.valueOf(keyValue.getValue())) {
-                        if (!orderByAdded) {
-                            query += " order by i.size";
-                            orderByAdded = true;
-                        } else {
-                            query += ", i.size";
-                        }
+                        queryBuilder = queryBuilder.orderBy("i.size");
                     }
                     break;
                 case "sortByInventorySizeDesc":
                     if (Boolean.valueOf(keyValue.getValue())) {
-                        if (!orderByAdded) {
-                            query += " order by i.size desc";
-                            orderByAdded = true;
-                        } else {
-                            query += ", i.size desc";
-                        }
+                        queryBuilder = queryBuilder.orderBy("i.size desc");
                     }
                     break;
             }
         }
-        Query jpaQuery = entityManager.createQuery(query).setFirstResult(pageNumber * pageSize).setMaxResults((pageNumber + 1) * pageSize);
+        logger.info("resultQuery: " + queryBuilder.getQuery());
+        Query jpaQuery = entityManager.createQuery(queryBuilder.getQuery()).setFirstResult(pageNumber * pageSize).setMaxResults((pageNumber + 1) * pageSize);
         return jpaQuery.getResultList();
     }
 }

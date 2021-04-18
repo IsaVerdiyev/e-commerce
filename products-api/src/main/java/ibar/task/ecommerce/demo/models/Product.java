@@ -29,7 +29,7 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    List<InventoryItem> inventory = new ArrayList<>();
+    List<InventoryItem> inventoryItems = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_options_id", referencedColumnName = "id")
@@ -78,12 +78,12 @@ public class Product {
         this.unitPrice = unitPrice;
     }
 
-    public List<InventoryItem> getInventory() {
-        return inventory;
+    public List<InventoryItem> getInventoryItems() {
+        return inventoryItems;
     }
 
-    public void setInventory(List<InventoryItem> inventory) {
-        this.inventory = inventory;
+    public void setInventoryItems(List<InventoryItem> inventoryItems) {
+        this.inventoryItems = inventoryItems;
     }
 
     public DeliveryOptions getDeliveryOptions() {

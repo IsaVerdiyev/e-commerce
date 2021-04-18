@@ -100,6 +100,9 @@ public class Merchant {
         this.password = password;
     }
 
+    public boolean validatePassword(String password){
+        return this.password.equals(password);
+    }
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

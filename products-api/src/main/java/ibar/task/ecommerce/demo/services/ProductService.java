@@ -76,6 +76,9 @@ public class ProductService {
                 case "inventorySize_gth":
                     queryBuilder = queryBuilder.where("i.size > " + keyValue.getValue());
                     break;
+                case "merchantId":
+                    queryBuilder = queryBuilder.where("p.merchantId = " + keyValue.getValue());
+                    break;
             }
         }
         logger.info("resultQuery: " + queryBuilder.getQuery());

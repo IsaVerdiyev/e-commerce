@@ -4,6 +4,7 @@ import ibar.task.ecommerce.demo.models.DeliveryOptions;
 import ibar.task.ecommerce.demo.models.Product;
 import ibar.task.ecommerce.demo.repositories.DelivertyOptionsRepository;
 import ibar.task.ecommerce.demo.repositories.ProductRepository;
+import ibar.task.ecommerce.demo.repositories.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,9 @@ public class ProductService {
     ProductRepository productRepository;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    EntityManager entityManager;
+
+
 
     public Product addProduct(Product product) {
         DeliveryOptions deliveryOptions = delivertyOptionsRepository.save(product.getDeliveryOptions());
@@ -46,7 +49,7 @@ public class ProductService {
     }
 
     List<Product> getProductsByQueryParameters(Map<String, String> params, Integer pageNumber, Integer pageSize) {
-        QuiryBuilder queryBuilder = new QuiryBuilder("select p from Product p join p.inventoryItems i").groupBy("p");
+        QueryBuilder queryBuilder = new QueryBuilder("select p from Product p join p.inventoryItems i").groupBy("p");
         for (Map.Entry<String, String> keyValue : params.entrySet()) {
             String key = keyValue.getKey();
             switch (key) {
@@ -69,6 +72,9 @@ public class ProductService {
                     if (Boolean.valueOf(keyValue.getValue())) {
                         queryBuilder = queryBuilder.orderBy("i.size desc");
                     }
+                    break;
+                case "inventorySize_gth":
+                    queryBuilder = queryBuilder.where("i.size > " + keyValue.getValue());
                     break;
             }
         }

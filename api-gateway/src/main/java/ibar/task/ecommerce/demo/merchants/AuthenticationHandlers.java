@@ -65,7 +65,7 @@ public class AuthenticationHandlers {
         Mono<AuthenticationInfo> authenticationInfoMono = serverRequest.bodyToMono(AuthenticationInfo.class);
         return authenticationInfoMono.zipWhen(m -> merchantsService.getMerchant(m), (authMono, merchantMono) -> authMono)
                 .zipWhen(a -> authenticatorService.signIn(a), (authMono, headerMono) -> headerMono)
-                .zipWhen(h -> ServerResponse.ok().header("token", h).body(fromValue("")), (headerMono, responseMono) -> responseMono)
+                .zipWhen(h -> ServerResponse.ok().header("token", (String)h).body(fromValue("")), (headerMono, responseMono) -> responseMono)
                 .onErrorResume(error -> {
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException webClientError = (WebClientResponseException) error;

@@ -1,5 +1,6 @@
 package ibar.task.ecommerce.demo.proxies;
 
+import ibar.task.ecommerce.demo.exceptions.WebClientResponseException;
 import ibar.task.ecommerce.demo.models.AuthenticationInfo;
 import ibar.task.ecommerce.demo.models.Merchant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,38 +18,35 @@ public class AuthenticatorProxy {
     @Autowired
     private WebClient client;
 
-    public Mono<String> signIn(AuthenticationInfo authenticationInfo){
-        System.out.println("in signIn");
-        Mono<String> response = client.post()
+    public Mono<Object> signIn(AuthenticationInfo authenticationInfo){
+        Mono<Object> response = client.post()
                 .uri(authenticatorUrl + "/getToken")
                 .body(Mono.just(authenticationInfo), AuthenticationInfo.class)
                 .exchangeToMono(resp -> {
                     System.out.println("resp.statusCode: " + resp.statusCode().toString());
                     switch (resp.statusCode()) {
-
                         case OK:
-                            resp.headers().asHttpHeaders().forEach((h, v) -> {
-                                System.out.println("header1: " + h + "; value: " + v);
-                            });
                             return Mono.just(resp.headers().header("token").get(0));
                         default:
-                            return Mono.error(new RuntimeException());
+                            Mono<String> errorConent = resp.bodyToMono(String.class);
+                            return errorConent.zipWhen(str -> Mono.error(new WebClientResponseException(resp.statusCode(), str, resp.headers().asHttpHeaders())), (str, e) -> e);
                     }
                 });
         return response;
     }
 
-    public Mono<String> checkToken(String token){
+    public Mono<Object> checkToken(String token){
 
-        Mono<String> response = client.post()
+        Mono<Object> response = client.post()
                 .uri(authenticatorUrl + "/validateToken")
                 .header("token", token)
                 .exchangeToMono(resp -> {
                     switch (resp.statusCode()) {
                         case OK:
-                            return Mono.just(resp.headers().header("token").get(0));
+                            return Mono.just("");
                         default:
-                            return Mono.error(new RuntimeException());
+                            Mono<String> errorConent = resp.bodyToMono(String.class);
+                            return errorConent.zipWhen(str -> Mono.error(new WebClientResponseException(resp.statusCode(), str, resp.headers().asHttpHeaders())), (str, e) -> e);
                     }
                 });
         return response;

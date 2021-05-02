@@ -20,7 +20,6 @@ public class MerchantsProxy {
     private WebClient client;
 
     public Mono<Object> signUp(Merchant merchant) {
-        System.out.println("merchantUrl: " + merchantUrl);
         Mono<Object> response = client.post()
                 .uri(merchantUrl)
                 .body(Mono.just(merchant), Merchant.class)

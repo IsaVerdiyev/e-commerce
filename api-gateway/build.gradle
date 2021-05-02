@@ -1,0 +1,32 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'ibar.task.ecommerce'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
+	compile "org.springframework.boot:spring-boot-starter-webflux"
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.5'
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies
+	runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: '2020.0.2', ext: 'pom'
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-gateway
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-gateway', version: '3.0.2'
+
+
+}
+
+test {
+	useJUnitPlatform()
+}

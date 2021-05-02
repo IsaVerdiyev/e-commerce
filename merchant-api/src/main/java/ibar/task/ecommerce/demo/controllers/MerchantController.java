@@ -14,17 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("/merchants")
 public class MerchantController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     MerchantService merchantService;
 
-    @PostMapping("/signUp")
+    @PostMapping
     public ResponseEntity<Object> signUp(@Valid @RequestBody Merchant merchant) throws CommonException {
         merchantService.addMerchant(merchant);
         return ResponseEntity.ok("");
@@ -33,7 +35,6 @@ public class MerchantController {
     @PostMapping("/signIn")
     public ResponseEntity<Object> signIn(@Valid @RequestBody AuthenticationInfo authenticationInfo) throws CommonException, JsonProcessingException {
         String token = merchantService.getMerchantByAuthenticationInfo(authenticationInfo);
-        logger.info("token: " + token);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("token", token);
         return ResponseEntity.ok().headers(responseHeaders).body("");

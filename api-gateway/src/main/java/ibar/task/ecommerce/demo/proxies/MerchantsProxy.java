@@ -1,9 +1,8 @@
 package ibar.task.ecommerce.demo.proxies;
 
-import ibar.task.ecommerce.demo.errors.ApiError;
 import ibar.task.ecommerce.demo.exceptions.WebClientResponseException;
-import ibar.task.ecommerce.demo.models.AuthenticationInfo;
-import ibar.task.ecommerce.demo.models.Merchant;
+import ibar.task.ecommerce.demo.merchants.models.AuthenticationInfo;
+import ibar.task.ecommerce.demo.merchants.models.Merchant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class MerchantsProxy {
 
     public Mono<Object> signUp(Merchant merchant) {
         Mono<Object> response = client.post()
-                .uri(merchantUrl)
+                .uri(merchantUrl, u -> u.path("/merchants").build())
                 .body(Mono.just(merchant), Merchant.class)
                 .exchangeToMono(resp -> {
                     switch (resp.statusCode()) {
@@ -38,7 +37,7 @@ public class MerchantsProxy {
     public Mono<Object> getMerchant(AuthenticationInfo authenticationInfo) {
 
         Mono<Object> response = client.post()
-                .uri(merchantUrl + "/signIn")
+                .uri(merchantUrl, u -> u.path("/merchants/signIn").build())
                 .body(Mono.just(authenticationInfo), AuthenticationInfo.class)
                 .exchangeToMono(resp -> {
                     switch (resp.statusCode()) {

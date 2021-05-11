@@ -1,34 +1,20 @@
 package ibar.task.ecommerce.demo.merchants;
 
-import ibar.task.ecommerce.demo.errors.ApiError;
 import ibar.task.ecommerce.demo.exceptions.WebClientResponseException;
-import ibar.task.ecommerce.demo.models.AuthenticationInfo;
-import ibar.task.ecommerce.demo.models.Merchant;
 import ibar.task.ecommerce.demo.proxies.AuthenticatorProxy;
 import ibar.task.ecommerce.demo.proxies.MerchantsProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.BodyExtractor;
-import org.springframework.web.reactive.function.BodyExtractors;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
-
-import java.util.Locale;
-import java.util.Optional;
+import ibar.task.ecommerce.demo.merchants.models.*;
 
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
-import static org.springframework.web.reactive.function.server.ServerResponse.from;
-import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Component
 public class AuthenticationHandlers {

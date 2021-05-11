@@ -1,12 +1,10 @@
 package ibar.task.ecommerce.demo.proxies;
 
 import ibar.task.ecommerce.demo.exceptions.WebClientResponseException;
-import ibar.task.ecommerce.demo.models.AuthenticationInfo;
-import ibar.task.ecommerce.demo.models.Merchant;
+import ibar.task.ecommerce.demo.merchants.models.AuthenticationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 

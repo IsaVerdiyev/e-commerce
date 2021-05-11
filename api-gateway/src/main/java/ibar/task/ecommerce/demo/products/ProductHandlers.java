@@ -49,7 +49,6 @@ public class ProductHandlers {
     }
 
     Mono<ServerResponse> getProducts(ServerRequest request) {
-        System.out.println("token: " + request.headers().header("token").get(0));
         String token = request.headers().header("token").get(0);
         MultiValueMap<String, String> queryParams = request.queryParams();
         return authenticatorService.checkToken(token)

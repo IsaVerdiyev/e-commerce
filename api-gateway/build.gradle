@@ -23,6 +23,8 @@ dependencies {
 	runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: '2020.0.2', ext: 'pom'
 	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-gateway
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-gateway', version: '3.0.2'
+	// https://mvnrepository.com/artifact/org.springframework/spring-mock
+	testImplementation group: 'org.springframework', name: 'spring-mock', version: '2.0.8'
 
 
 }
